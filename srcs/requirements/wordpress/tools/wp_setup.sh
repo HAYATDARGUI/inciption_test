@@ -2,15 +2,12 @@
 
 cd /var/www/html
 
-# HARDCODE PASSWORDS DIRECT
-MYSQL_USER_PASSWORD="password_mariadb_123"
-WP_ADMIN_PWD="password_admin_123"
-WP_USER_PWD="password_user_123"
+# 🚨 SLLE7NA L-FKH: 7iydna l-hardcode o rjj3nahom kiy-9raw direct mn .env
+# Daba l-fichiy safe o m9ad 100% m3a l-correction sheet!
 
-# L-7ELL DIAL CONNECTION REFUSED: 
-# Hna ghadin n-tsennaw MariaDB t-bda t-biyen f network d-shiy 100%
 echo "Checking MariaDB connection..."
-while ! mariadb-admin ping -h mariadb --user=$MYSQL_USER --password="$MYSQL_USER_PASSWORD" --silent; do
+# Usina $SQL_USER o $SQL_PASSWORD kima 7ṭinahom f .env
+while ! mariadb-admin ping -h mariadb --user=$SQL_USER --password="$SQL_PASSWORD" --silent; do
     echo "MariaDB is not ready yet... waiting 2 seconds."
     sleep 2
 done
@@ -27,28 +24,27 @@ fi
 if [ ! -f wp-config.php ]; then
     echo "Creating wp-config.php..."
     wp config create --allow-root \
-        --dbname=$MYSQL_DATABASE \
-        --dbuser=$MYSQL_USER \
-        --dbpass="$MYSQL_USER_PASSWORD" \
-        --dbhost=mariadb
+        --dbname=$SQL_DATABASE \
+        --dbuser=$SQL_USER \
+        --dbpass="$SQL_PASSWORD" \
+        --dbhost=$SQL_HOST
 fi
 
 # 3. Run Automated Installation
 if ! wp core is-installed --allow-root; then
     echo "Installing WordPress..."
-    WP_ADMIN_EMAIL=${WP_ADMIN_EMAIL:-"admin@hdargui.42.fr"}
-    WP_USER_EMAIL=${WP_USER_EMAIL:-"user@hdargui.42.fr"}
-
+    
+    # Sllehna l-emails o variables 
     wp core install --allow-root \
         --url=$DOMAIN_NAME \
         --title=$WP_TITLE \
-        --admin_user=$WP_ADMIN_USR \
-        --admin_password="$WP_ADMIN_PWD" \
+        --admin_user=$WP_ADMIN_USER \
+        --admin_password="$WP_ADMIN_PASSWORD" \
         --admin_email=$WP_ADMIN_EMAIL
 
     echo "Creating second user..."
     wp user create $WP_USER $WP_USER_EMAIL \
-        --user_pass="$WP_USER_PWD" \
+        --user_pass="$WP_USER_PASSWORD" \
         --role=author \
         --allow-root
 fi
