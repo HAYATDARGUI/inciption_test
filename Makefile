@@ -2,8 +2,8 @@ NAME = inception
 
 all:
 	@printf "Creating data directories...\n"
-	@mkdir -p /home/obghit/data/mariadb
-	@mkdir -p /home/obghit/data/wordpress
+	@mkdir -p /home/hdargui/data/mariadb
+	@mkdir -p /home/hdargui/data/wordpress
 	@printf "Building and starting containers...\n"
 	@docker compose -f srcs/docker-compose.yml up --build -d
 
@@ -22,7 +22,7 @@ fclean:
 	@printf "Deep cleaning: removing volumes and host data...\n"
 	@docker compose -f srcs/docker-compose.yml down -v
 	@docker system prune -a --volumes -f
-	@sudo rm -rf /home/obghit/data/mariadb/*
-	@sudo rm -rf /home/obghit/data/wordpress/*
+	@sudo rm -rf /home/hdargui/data/mariadb/*
+	@sudo rm -rf /home/hdargui/data/wordpress/*
 
 .PHONY: all down re clean fclean
