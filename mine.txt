@@ -1,0 +1,39 @@
+# 1. Stopi o msa7 ga3 l-containers d l-projet (force)
+docker-compose down --volumes --remove-orphans
+
+# 2. Msa7 l-containers b smiyathom d-shiy bach t-7eyed l-conflict
+docker rm -f mariadb wordpress nginx 2>/dev/null
+
+# 3. N9i l-images li m-be3ze9in f l-cache
+docker system prune -a -f
+
+# 4. Build o start mn zero
+docker-compose up --build -d
+docker compose up --build -d
+
+
+#nchofo chmen por ki listni 3lih dak continaire 
+docker exec -it nginx ss -tuln
+
+
+
+Firefox 
+(o ga3 l-browsers) kiy-9elbou 3la certificat SSL li t-m-signat men 3nd chi charika ma3roufa
+ (bhala DigiCert aw Let's Encrypt). Bima ann l-Subject dial 
+Inception kiy-فرض 3lik t-creer certificat dyalk b rasek (openssl), Firefox 
+kiy-goulik: "Hada wahed l-site m-configuri b SSL, walakin ana 
+ma-3reftch chkoun li sana had l-certificat."
+
+//to test bli kola conatiner howa rah wahed process live 
+ps aux | grep mariadbd
+
+commande docker network ls 
+
+
+mkdir -p → create required runtime folder
+chown -R → give ownership to mysql user for DB + runtime files
+
+COPY → move file into image
+chmod → allow execution
+EXPOSE → declare port
+ENTRYPOINT → run at startup
