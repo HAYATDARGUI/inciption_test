@@ -4,6 +4,7 @@ all:
 	@printf "Creating data directories...\n"
 	@mkdir -p /home/hdargui/data/mariadb
 	@mkdir -p /home/hdargui/data/wordpress
+	@mkdir -p /home/hdargui/data/portainer
 	@printf "Building and starting containers...\n"
 	@docker compose -f srcs/docker-compose.yml up --build -d
 
@@ -24,5 +25,5 @@ fclean:
 	@docker system prune -a --volumes -f
 	@sudo rm -rf /home/hdargui/data/mariadb/*
 	@sudo rm -rf /home/hdargui/data/wordpress/*
-
+	@sudo rm -rf /home/hdargui/data/portainer/*
 .PHONY: all down re clean fclean

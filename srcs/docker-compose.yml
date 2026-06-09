@@ -101,6 +101,20 @@ services:
     # 🏁 L-Gntra direct direct binding mapping alignment parameters loops safely
     volumes:
       - ./requirements/bonus/website/html:/usr/share/nginx/html:ro
+  portainer:
+    build:
+      context: ./requirements/bonus/portainer
+      dockerfile: Dockerfile
+    image: inception_portainer:latest
+    container_name: portainer
+    restart: always
+    ports:
+      - "9443:9443" # Port secure d HTTPS dial Portainer dashboard
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock # Gntra direct l Docker socket bash y-monitouriy l-containers
+      - portainer_data:/data
+    networks:
+      - inception_network
 networks:
   inception_network:
     driver: bridge
@@ -118,3 +132,9 @@ volumes:
       type: none
       o: bind
       device: /home/hdargui/data/wordpress
+  portainer_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/hdargui/data/portainer
