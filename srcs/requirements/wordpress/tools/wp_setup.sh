@@ -47,6 +47,13 @@ if ! wp core is-installed --allow-root; then
         --user_pass="$WP_USER_PASSWORD" \
         --role=author \
         --allow-root
+    echo "Configuring Redis Object Cache..."
+    wp config set WP_REDIS_HOST redis --allow-root
+    wp config set WP_REDIS_PORT 6379 --raw --allow-root
+    
+    wp plugin install redis-cache --activate --allow-root
+    
+    wp redis enable --allow-root
 fi
 
 # 4. Fix permissions

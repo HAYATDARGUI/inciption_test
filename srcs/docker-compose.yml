@@ -44,7 +44,63 @@ services:
       - wp_data:/var/www/html
     depends_on:
       - wordpress
+  redis:
+    build:
+      context: ./requirements/bonus/redis
+      dockerfile: Dockerfile
+    image: inception_redis:latest
+    container_name: redis
+    restart: always
+    networks:
+      - inception_network
+    depends_on:
+      - wordpress # Khass wordpress y-koun t-fiyyeq houwa l-awwal
 
+  adminer:
+    build:
+      context: ./requirements/bonus/adminer
+      dockerfile: Dockerfile
+    image: inception_adminer:latest
+    container_name: adminer
+    restart: always
+    ports:
+      - "8080:8080" # Port standard f l-browser bash t-dkhol GUI l DB
+    networks:
+      - inception_network
+    depends_on:
+      - mariadb
+
+  ftp:
+    build:
+      context: ./requirements/bonus/ftp
+      dockerfile: Dockerfile
+    image: inception_ftp:latest
+    container_name: ftp
+    restart: always
+    env_file:
+      - .env # Bach l-user o password d l-ftp y-tsm3o mn l-.env direct
+    ports:
+      - "21:21"        # FTP control port
+      - "40000-40005:40000-40005" # Passive mode ports matrix mapping
+    networks:
+      - inception_network
+    volumes:
+      - wp_data:/var/www/html # Sharing system data folder m3a wordpress dynamic volume!
+
+  static_website:
+    build:
+      context: ./requirements/bonus/website
+      dockerfile: Dockerfile
+    image: inception_website:latest
+    container_name: static_website
+    restart: always
+    ports:
+      - "8081:80"
+    networks:
+      - inception_network
+    # 🏁 L-Gntra direct direct binding mapping alignment parameters loops safely
+    volumes:
+      - ./requirements/bonus/website/html:/usr/share/nginx/html:ro
 networks:
   inception_network:
     driver: bridge
