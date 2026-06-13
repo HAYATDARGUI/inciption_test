@@ -2,6 +2,18 @@
 
 cd /var/www/html
 
+if [ -f "/run/secrets/wp_admin_password" ]; then
+    WP_ADMIN_PASSWORD=$(cat /run/secrets/wp_admin_password)
+fi
+
+if [ -f "/run/secrets/wp_user_password" ]; then
+    WP_USER_PASSWORD=$(cat /run/secrets/wp_user_password)
+fi
+
+if [ -f "/run/secrets/db_password" ]; then
+    SQL_PASSWORD=$(cat /run/secrets/db_password)
+fi
+
 # 🚨 SLLE7NA L-FKH: 7iydna l-hardcode o rjj3nahom kiy-9raw direct mn .env
 # Daba l-fichiy safe o m9ad 100% m3a l-correction sheet!
 

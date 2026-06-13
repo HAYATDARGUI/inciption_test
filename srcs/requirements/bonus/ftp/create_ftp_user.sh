@@ -5,7 +5,10 @@ set -e
 # and run vsftpd with the provided config.
 
 FTP_USER=${FTP_USER:-ftpuser}
-FTP_PASS=${FTP_PASS:-ftppass}
+if [ -f "/run/secrets/ftp_password" ]; then
+    FTP_PASS=$(cat /run/secrets/ftp_password)
+fi
+
 
 # Create user if needed
 if ! id "$FTP_USER" >/dev/null 2>&1; then

@@ -1,5 +1,12 @@
 #!/bin/bash
 
+if [ -f "/run/secrets/db_root_password" ]; then
+    SQL_ROOT_PASSWORD=$(cat /run/secrets/db_root_password)
+fi
+
+if [ -f "/run/secrets/db_password" ]; then
+    SQL_PASSWORD=$(cat /run/secrets/db_password)
+fi
 
 if [ ! -d "/var/lib/mysql/mysql" ]; then 
     echo "Initializing MariaDB system folders..."
