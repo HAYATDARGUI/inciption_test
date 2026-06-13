@@ -54,7 +54,7 @@ services:
     networks:
       - inception_network
     depends_on:
-      - wordpress # Khass wordpress y-koun t-fiyyeq houwa l-awwal
+      - wordpress 
 
   adminer:
     build:
@@ -64,7 +64,7 @@ services:
     container_name: adminer
     restart: always
     ports:
-      - "8080:8080" # Port standard f l-browser bash t-dkhol GUI l DB
+      - "8080:8080" 
     networks:
       - inception_network
     depends_on:
@@ -78,15 +78,14 @@ services:
     container_name: ftp
     restart: always
     env_file:
-      - .env # Bach l-user o password d l-ftp y-tsm3o mn l-.env direct
+      - .env
     ports:
-      - "21:21"        # FTP control port
-      - "40000-40005:40000-40005" # Passive mode ports matrix mapping
+      - "21:21"
+      - "40000-40005:40000-40005" 
     networks:
       - inception_network
     volumes:
-      - wp_data:/var/www/html # Sharing system data folder m3a wordpress dynamic volume!
-
+      - wp_data:/var/www/html 
   static_website:
     build:
       context: ./requirements/bonus/website
@@ -98,7 +97,6 @@ services:
       - "8081:80"
     networks:
       - inception_network
-    # 🏁 L-Gntra direct direct binding mapping alignment parameters loops safely
     volumes:
       - ./requirements/bonus/website/html:/usr/share/nginx/html:ro
   portainer:
@@ -109,9 +107,9 @@ services:
     container_name: portainer
     restart: always
     ports:
-      - "9443:9443" # Port secure d HTTPS dial Portainer dashboard
+      - "9443:9443"
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock # Gntra direct l Docker socket bash y-monitouriy l-containers
+      - /var/run/docker.sock:/var/run/docker.sock
       - portainer_data:/data
     networks:
       - inception_network
