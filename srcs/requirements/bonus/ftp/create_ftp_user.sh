@@ -1,26 +1,36 @@
 #!/bin/sh
 set -e
 
-# Simple entrypoint: create ftp user if it doesn't exist, set password from FTP_PASSWORD env,
-# and run vsftpd with the provided config.
-
 FTP_USER=${FTP_USER:-ftpuser}
+
 if [ -f "/run/secrets/ftp_password" ]; then
-    FTP_PASS=$(cat /run/secrets/ftp_password)
+    FTP_PASS=$(tr -d '\r\n' < /run/secrets/ftp_password)
+else
+    FTP_PASS="ftp_user_password_2026"
 fi
 
+mkdir -p /var/run/vsftpd/empty
+mkdir -p /etc/vsftpd
 
-# Create user if needed
+mkdir -p /etc/pam.d
+echo "auth required pam_unix.so" > /etc/pam.d/vsftpd
+echo "account required pam_unix.so" >> /etc/pam.d/vsftpd
+
+if ! grep -q "^/bin/false$" /etc/shells; then
+    echo "/bin/false" >> /etc/shells
+fi
+
 if ! id "$FTP_USER" >/dev/null 2>&1; then
-  adduser -D -h /home/$FTP_USER -s /bin/false $FTP_USER || exit 1
+    useradd -m -s /bin/false "$FTP_USER"
 fi
 
-# Set password
 echo "$FTP_USER:$FTP_PASS" | chpasswd
 
-# Ensure proper ownership
-mkdir -p /home/$FTP_USER
-chown -R $FTP_USER:$FTP_USER /home/$FTP_USER
+chown root:root /home/$FTP_USER
+chmod 555 /home/$FTP_USER
 
-# Start vsftpd in foreground
+mkdir -p /home/$FTP_USER/ftp
+chown -R $FTP_USER:$FTP_USER /home/$FTP_USER/ftp
+chmod 755 /home/$FTP_USER/ftp
+
 exec /usr/sbin/vsftpd /etc/vsftpd/vsftpd.conf

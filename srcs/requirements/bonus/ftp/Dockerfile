@@ -1,6 +1,5 @@
 FROM alpine:3.18
 
-# Minimal vsftpd container. This is simple and intended for development/testing only.
 RUN apk add --no-cache vsftpd openssl shadow busybox-extras
 
 COPY vsftpd.conf /etc/vsftpd/vsftpd.conf

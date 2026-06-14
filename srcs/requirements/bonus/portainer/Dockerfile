@@ -1,6 +1,5 @@
 FROM debian:bullseye
 
-# Install-iy wget o tar bash n-fetchiw binary offisiy d Portainer
 RUN apt-get update && apt-get install -y wget tar && \
     wget https://github.com/portainer/portainer/releases/download/2.19.4/portainer-2.19.4-linux-amd64.tar.gz && \
     tar -xvzf portainer-2.19.4-linux-amd64.tar.gz && \
@@ -9,5 +8,4 @@ RUN apt-get update && apt-get install -y wget tar && \
 WORKDIR /portainer
 EXPOSE 9443
 
-# Run-iy l-binary direct kima daemons guidance rules
 ENTRYPOINT ["./portainer"]

@@ -78,36 +78,38 @@ services:
       - mariadb
 
   ftp:
-    build:
-      context: ./requirements/bonus/ftp
-      dockerfile: Dockerfile
-    image: inception_ftp:latest
-    container_name: ftp
-    restart: always
-    env_file:
-      - .env
-    secrets:
-      - ftp_password
-    ports:
-      - "21:21"
-      - "40000-40005:40000-40005" 
-    networks:
-      - inception_network
-    volumes:
-      - wp_data:/var/www/html 
+      build:
+        context: ./requirements/bonus/ftp
+        dockerfile: Dockerfile
+      image: inception_ftp:latest
+      container_name: ftp
+      restart: always
+      env_file:
+        - .env
+      secrets:
+        - ftp_password
+      ports:
+        - "21:21"
+        - "40000-40005:40000-40005" 
+      networks:
+        - inception_network
+      volumes:
+        - wp_data:/var/www/html
+
   static_website:
-    build:
-      context: ./requirements/bonus/website
-      dockerfile: Dockerfile
-    image: inception_website:latest
-    container_name: static_website
-    restart: always
-    ports:
-      - "8081:80"
-    networks:
-      - inception_network
-    volumes:
-      - ./requirements/bonus/website/html:/usr/share/nginx/html:ro
+      build:
+        context: ./requirements/bonus/website
+        dockerfile: Dockerfile
+      image: inception_website:latest
+      container_name: static_website
+      restart: always
+      ports:
+        - "8081:80"
+      networks:
+        - inception_network
+      volumes:
+          - ./requirements/bonus/website/html:/var/www/html:ro
+
   portainer:
     build:
       context: ./requirements/bonus/portainer
